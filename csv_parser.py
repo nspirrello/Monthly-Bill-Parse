@@ -1,18 +1,16 @@
 #Nicholas Pirrello
 #10/16/2017
-#CSVParser
-#CSV --> JSON Parser for monthly billing form
+#Summary_CSV_Parser
+#CSV Parser for monthly billing summaries
 import csv
-import json
-import datetime
 
-def main():
+def init_parse(fname):
 	#Open the specified .csv file, read in the file to the "data" variable, then
 	#call parse_list on "data" in order change to a more suitable format.
-	file = open('J:/Tasks/Task1.csv')
+	file = open(fname)
 	reader = csv.reader(file, delimiter=',')
 	data = list(reader)
-	parse_list(data)
+	return parse_list(data)
 
 def parse_list(list):
 	#Loop through the .csv reader output, since only the first set of data is needed
@@ -41,7 +39,7 @@ def parse_list(list):
 			company_name_col = j
 		elif important_data_block[identifier_row][j] == "PostTaxTotal":
 			post_tax_total_col = j
-	parse_relevant_sections(important_data_block, identifier_row, company_name_col, post_tax_total_col)
+	return parse_relevant_sections(important_data_block, identifier_row, company_name_col, post_tax_total_col)
 
 def parse_relevant_sections(list, identifier_row, company_name_col, post_tax_total_col):
 	#For every company that is not the disculed_company, if they are already "seen"
@@ -64,7 +62,7 @@ def parse_relevant_sections(list, identifier_row, company_name_col, post_tax_tot
 			else:
 				comp_data = {'name':comp_name, 'preproc':round(float(comp_tax),2), 'postproc':0, 'percentage':.40}
 				seen_companies.append(comp_data)						
-	calculate(seen_companies)
+	return calculate(seen_companies)
 
 def is_in(list, name):
 	#If the specified name is found in the list, return True, otherwise False
@@ -81,13 +79,4 @@ def calculate(list):
 		percent = i['percentage']
 		postproc = preproc * percent + preproc
 		i['postproc'] = round(float(postproc), 2)
-	print(list)
-
-def to_JSON(list):
-	#JSON fille structure
-	current = datetime.datetime.now()
-	file_date = 
-	with open()
-
-if __name__ == "__main__":
-	main()
+	return list
