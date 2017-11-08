@@ -2,10 +2,9 @@
 #10/25/17
 #Parse_Gui
 #User Interface for summary_csv_parser and billing_csv_parser
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QAction, QPushButton, QTableWidget,QTableWidgetItem,QGridLayout,QHeaderView, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QAction, QPushButton, QTableWidget,QTableWidgetItem,QGridLayout,QHeaderView, QFileDialog, QInputDialog, QLineEdit
 from PyQt5.QtGui import QIcon
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import *
+
 import sys
 import csv_parser
 
@@ -22,10 +21,11 @@ class Summary(QWidget):
 		#button init
 		import_bttn = QPushButton('Import')
 		reset_bttn = QPushButton('Reset')
-		save_pdf_bttn = QPushButton("Save PDF (Not working)")
+		save_pdf_bttn = QPushButton("Save PDF")
 		
 		import_bttn.clicked.connect(self.imprt_click)
 		reset_bttn.clicked.connect(self.reset_click)
+		save_pdf_bttn.clicked.connect(self.savePDF_click)
 
 		#Table init
 		self.tableWidget = QTableWidget()
@@ -67,7 +67,10 @@ class Summary(QWidget):
 		self.tableWidget.setRowCount(0)
 		self.tableWidget.setHorizontalHeaderLabels("Company;PreTax;PostTax;Percent".split(";"))
 
-	
+	def savePDF_click(self):
+		text, okPressed = QInputDialog.getText(self,"PDF Saving","PDF File Name:",QLineEdit.Normal,"")
+		if okPressed and text != '':
+			print(text)
 
 			
 if __name__ == '__main__':
