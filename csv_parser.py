@@ -11,6 +11,7 @@ def init_parse(fname):
 	reader = csv.reader(file, delimiter=',')
 	data = list(reader)
 	return parse_list(data)
+	file.close()
 
 def parse_list(list):
 	#Loop through the .csv reader output, since only the first set of data is needed
@@ -21,9 +22,9 @@ def parse_list(list):
 	#"PostTaxTotal" data can be found and store these column values. Call 
 	#"parse_relevant_sections" with the new list, "important_data_block", our starting
 	#row and our columns where the data we need can be found. 
-	post_tax_total_col = 0;
-	company_name_col = 0;
-	identifier_row = 0;
+	post_tax_total_col = 0
+	company_name_col = 0
+	identifier_row = 0
 	
 	important_data_block = []
 	i = 0
@@ -58,9 +59,9 @@ def parse_relevant_sections(list, identifier_row, company_name_col, post_tax_tot
 				for i in seen_companies:
 					if i['name'] == comp_name:
 						preproc = float(i['preproc'])
-						i['preproc'] = round(float(comp_tax) + preproc,2)
+						i['preproc'] = str(round(float(comp_tax) + preproc,2))
 			else:
-				comp_data = {'name':comp_name, 'preproc':round(float(comp_tax),2), 'postproc':0, 'percentage':.40}
+				comp_data = {'name':comp_name, 'preproc':str(round(float(comp_tax),2)), 'postproc':str(0), 'percentage':str(.20)}
 				seen_companies.append(comp_data)						
 	return calculate(seen_companies)
 
@@ -75,8 +76,8 @@ def calculate(list):
 	#For every company in the seen list, calculate using their pre-tax charges 
 	#by multiplying their charges by their percentage, follwed by storing the total
 	for i in list:
-		preproc = i['preproc']
-		percent = i['percentage']
+		preproc = float(i['preproc'])
+		percent = float(i['percentage'])
 		postproc = preproc * percent + preproc
-		i['postproc'] = round(float(postproc), 2)
+		i['postproc'] = str(round(float(postproc), 2))
 	return list
